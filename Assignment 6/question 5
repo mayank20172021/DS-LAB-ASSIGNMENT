@@ -1,0 +1,65 @@
+#include <iostream>
+using namespace std;
+
+// Node structure
+struct Node {
+    int data;
+    Node* next;
+};
+
+// Function to insert at end
+void insertEnd(Node*& head, Node*& tail, int value) {
+    Node* newNode = new Node{value, nullptr};
+
+    if (head == nullptr) {         // first node
+        head = tail = newNode;
+    } else {
+        tail->next = newNode;
+        tail = newNode;
+    }
+}
+
+// Function to make the list circular (connect tail to head)
+void makeCircular(Node* tail, Node* head) {
+    if (tail != nullptr)
+        tail->next = head;
+}
+
+// Function to check if list is circular
+bool isCircular(Node* head) {
+    if (head == nullptr)
+        return false;
+
+    Node* temp = head->next;
+
+    while (temp != nullptr && temp != head) {
+        temp = temp->next;
+    }
+
+    // If temp becomes head again → circular
+    return (temp == head);
+}
+
+// MAIN PROGRAM
+int main() {
+    Node* head = nullptr;
+    Node* tail = nullptr;
+
+    // Example: 2 → 4 → 6 → 7 → 5
+    insertEnd(head, tail, 2);
+    insertEnd(head, tail, 4);
+    insertEnd(head, tail, 6);
+    insertEnd(head, tail, 7);
+    insertEnd(head, tail, 5);
+
+    // Make it circular like in example
+    makeCircular(tail, head);
+
+    // Check
+    if (isCircular(head))
+        cout << "True\n";
+    else
+        cout << "False\n";
+
+    return 0;
+}
