@@ -1,0 +1,54 @@
+#include <iostream>
+using namespace std;
+
+// Node structure for Doubly Linked List
+struct Node {
+    char data;
+    Node* next;
+    Node* prev;
+};
+
+// Function to insert node at end
+void insertEnd(Node*& head, Node*& tail, char value) {
+    Node* newNode = new Node{value, nullptr, nullptr};
+
+    if (head == nullptr) {  // First node
+        head = tail = newNode;
+    } else {
+        tail->next = newNode;
+        newNode->prev = tail;
+        tail = newNode;
+    }
+}
+
+// Function to check if DLL is palindrome
+bool isPalindrome(Node* head, Node* tail) {
+    while (head != nullptr && tail != nullptr && head != tail && tail->next != head) {
+        if (head->data != tail->data)
+            return false;
+
+        head = head->next;
+        tail = tail->prev;
+    }
+    return true;
+}
+
+int main() {
+    Node* head = nullptr;
+    Node* tail = nullptr;
+
+    // Example: L E V E L
+    insertEnd(head, tail, 'L');
+    insertEnd(head, tail, 'E');
+    insertEnd(head, tail, 'V');
+    insertEnd(head, tail, 'E');
+    insertEnd(head, tail, 'L');
+
+    // Check palindrome
+    if (isPalindrome(head, tail))
+        cout << "True\n";
+    else
+        cout << "False\n";
+
+    return 0;
+}
