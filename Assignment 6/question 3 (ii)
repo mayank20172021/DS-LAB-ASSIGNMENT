@@ -1,0 +1,36 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+// Function to count number of nodes in Circular Linked List
+int sizeOfCLL(Node* head) {
+    if (head == NULL) return 0;
+
+    int count = 0;
+    Node* temp = head;
+
+    do {
+        count++;
+        temp = temp->next;
+    } while (temp != head);
+
+    return count;
+}
+
+int main() {
+    // Creating circular linked list manually: 10 → 20 → 30 → back to head
+    Node* head = new Node{10, NULL};
+    Node* n1 = new Node{20, NULL};
+    Node* n2 = new Node{30, NULL};
+
+    head->next = n1;
+    n1->next = n2;
+    n2->next = head;  // circular
+
+    cout << "Size of Circular Linked List = " << sizeOfCLL(head);
+    return 0;
+}
