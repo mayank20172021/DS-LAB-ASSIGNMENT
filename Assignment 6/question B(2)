@@ -1,0 +1,96 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* prev;
+    Node* next;
+};
+
+Node* head = NULL;
+
+// Insert at first
+void insertFirst(int val) {
+    Node* newNode = new Node{val, NULL, head};
+
+    if (head != NULL)
+        head->prev = newNode;
+
+    head = newNode;
+}
+
+// Insert at last
+void insertLast(int val) {
+    Node* newNode = new Node{val, NULL, NULL};
+
+    if (head == NULL) {
+        head = newNode;
+        return;
+    }
+
+    Node* temp = head;
+    while (temp->next != NULL)
+        temp = temp->next;
+
+    temp->next = newNode;
+    newNode->prev = temp;
+}
+
+// Insert after
+void insertAfter(int key, int val) {
+    Node* temp = head;
+
+    while (temp != NULL) {
+        if (temp->data == key) {
+            Node* newNode = new Node{val, temp, temp->next};
+
+            if (temp->next != NULL)
+                temp->next->prev = newNode;
+
+            temp->next = newNode;
+            return;
+        }
+        temp = temp->next;
+    }
+
+    cout << "Node not found!\n";
+}
+
+// Insert before
+void insertBefore(int key, int val) {
+    if (head == NULL) return;
+
+    Node* temp = head;
+
+    if (head->data == key) {
+        insertFirst(val);
+        return;
+    }
+
+    while (temp != NULL) {
+        if (temp->data == key) {
+            Node* newNode = new Node{val, temp->prev, temp};
+            temp->prev->next = newNode;
+            temp->prev = newNode;
+            return;
+        }
+        temp = temp->next;
+    }
+
+    cout << "Node not found!\n";
+}
+
+int main() {
+    insertFirst(10);
+    insertLast(20);
+    insertAfter(10, 15);
+    insertBefore(20, 18);
+
+    Node* temp = head;
+    while (temp) {
+        cout << temp->data << " ";
+        temp = temp->next;
+    }
+
+    return 0;
+}
