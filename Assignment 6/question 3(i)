@@ -1,0 +1,33 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* prev;
+    Node* next;
+};
+
+// Function to count number of nodes
+int sizeOfDLL(Node* head) {
+    int count = 0;
+    Node* temp = head;
+
+    while (temp != NULL) {
+        count++;
+        temp = temp->next;
+    }
+    return count;
+}
+
+int main() {
+    // Creating nodes manually
+    Node* head = new Node{10, NULL, NULL};
+    Node* n1 = new Node{20, head, NULL};
+    Node* n2 = new Node{30, n1, NULL};
+
+    head->next = n1;
+    n1->next = n2;
+
+    cout << "Size of Doubly Linked List = " << sizeOfDLL(head);
+    return 0;
+}
