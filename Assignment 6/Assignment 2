@@ -1,0 +1,41 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+void display(Node* head) {
+    if (head == NULL) return;
+
+    Node* temp = head;
+
+    // Traverse normally
+    do {
+        cout << temp->data << " ";
+        temp = temp->next;
+    } while (temp != head);
+
+    // Print head again at end
+    cout << head->data << " ";
+}
+
+int main() {
+    // Manually creating 20 → 100 → 40 → 80 → 60 → back to head
+    Node *head = new Node{20, NULL};
+    Node *n1 = new Node{100, NULL};
+    Node *n2 = new Node{40, NULL};
+    Node *n3 = new Node{80, NULL};
+    Node *n4 = new Node{60, NULL};
+
+    head->next = n1;
+    n1->next = n2;
+    n2->next = n3;
+    n3->next = n4;
+    n4->next = head; // circular
+
+    display(head);
+
+    return 0;
+}
