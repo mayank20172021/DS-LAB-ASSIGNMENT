@@ -1,0 +1,28 @@
+void deleteNode(int key) {
+    if (head == NULL) return;
+
+    Node* temp = head;
+
+    // If head is to be deleted
+    if (temp->data == key) {
+        head = temp->next;
+        if (head) head->prev = NULL;
+        delete temp;
+        return;
+    }
+
+    while (temp != NULL) {
+        if (temp->data == key) {
+            if (temp->next)
+                temp->next->prev = temp->prev;
+
+            temp->prev->next = temp->next;
+
+            delete temp;
+            return;
+        }
+        temp = temp->next;
+    }
+
+    cout << "Node not found!\n";
+}
