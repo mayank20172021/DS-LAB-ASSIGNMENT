@@ -1,0 +1,77 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+struct Node {
+    int data;
+    Node *left, *right;
+    Node(int x) : data(x), left(NULL), right(NULL) {}
+};
+
+void inorder(Node* root, vector<int>& arr) {
+    if(!root) return;
+    inorder(root->left, arr);
+    arr.push_back(root->data);
+    inorder(root->right, arr);
+}
+
+struct DLL {
+    int data;
+    DLL *prev, *next;
+    DLL(int x) : data(x), prev(NULL), next(NULL) {}
+};
+
+DLL* createDLL(vector<int>& arr) {
+    if(arr.empty()) return NULL;
+
+    DLL* head = new DLL(arr[0]);
+    DLL* curr = head;
+
+    for(int i = 1; i < arr.size(); i++) {
+        DLL* temp = new DLL(arr[i]);
+        curr->next = temp;
+        temp->prev = curr;
+        curr = temp;
+    }
+    return head;
+}
+
+int main() {
+    // BST1
+    Node* T1 = new Node(20);
+    T1->left = new Node(10);
+    T1->right = new Node(30);
+    T1->left->left = new Node(25);
+    T1->right->right = new Node(100);
+    T1->right->left = new Node(50);
+
+    // BST2
+    Node* T2 = new Node(5);
+    T2->right = new Node(70);
+
+    vector<int> v1, v2;
+    inorder(T1, v1);
+    inorder(T2, v2);
+
+    // merge sorted arrays
+    vector<int> merged;
+    int i=0, j=0;
+    while(i < v1.size() && j < v2.size()) {
+        if(v1[i] < v2[j]) merged.push_back(v1[i++]);
+        else merged.push_back(v2[j++]);
+    }
+    while(i < v1.size()) merged.push_back(v1[i++]);
+    while(j < v2.size()) merged.push_back(v2[j++]);
+
+    DLL* head = createDLL(merged);
+
+    // print DLL
+    DLL* temp = head;
+    while(temp) {
+        cout << temp->data << " <—> ";
+        temp = temp->next;
+    }
+    cout << "null";
+
+    return 0;
+}
