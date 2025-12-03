@@ -1,0 +1,69 @@
+#include <iostream>
+#include <vector>
+#include <stack>
+using namespace std;
+
+class Graph {
+public:
+    int V;
+    vector<vector<int>> adj;
+
+    Graph(int v) {
+        V = v;
+        adj.resize(v);
+    }
+
+    void addEdge(int u, int v) {
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+
+    void DFS_recursive(int u, vector<bool> &visited) {
+        visited[u] = true;
+        cout << u << " ";
+        for(int v : adj[u]) {
+            if(!visited[v])
+                DFS_recursive(v, visited);
+        }
+    }
+
+    void DFS_rec(int start) {
+        vector<bool> visited(V, false);
+        DFS_recursive(start, visited);
+    }
+
+    void DFS_iter(int start) {
+        vector<bool> visited(V, false);
+        stack<int> st;
+
+        st.push(start);
+
+        while(!st.empty()) {
+            int u = st.top();
+            st.pop();
+
+            if(!visited[u]) {
+                visited[u] = true;
+                cout << u << " ";
+                for(int v : adj[u])
+                    if(!visited[v]) st.push(v);
+            }
+        }
+    }
+};
+
+int main() {
+    Graph g(5);
+    g.addEdge(0,1);
+    g.addEdge(1,2);
+    g.addEdge(0,3);
+    g.addEdge(3,4);
+
+    cout << "DFS Recursive: ";
+    g.DFS_rec(0);
+
+    cout << "\nDFS Iterative: ";
+    g.DFS_iter(0);
+
+    return 0;
+}
