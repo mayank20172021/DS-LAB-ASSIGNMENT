@@ -1,0 +1,49 @@
+#include <iostream>
+#include <unordered_set>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+    Node(int x) : data(x), next(NULL) {}
+};
+
+void printList(Node* head) {
+    while(head) {
+        cout << head->data << " ";
+        head = head->next;
+    }
+}
+
+int main() {
+    Node* head1 = new Node(10);
+    head1->next = new Node(15);
+    head1->next->next = new Node(4);
+    head1->next->next->next = new Node(20);
+
+    Node* head2 = new Node(8);
+    head2->next = new Node(4);
+    head2->next->next = new Node(2);
+    head2->next->next->next = new Node(10);
+
+    unordered_set<int> s1, s2;
+
+    Node *temp = head1;
+    while(temp) { s1.insert(temp->data); temp = temp->next; }
+
+    temp = head2;
+    while(temp) { s2.insert(temp->data); temp = temp->next; }
+
+    cout << "Intersection: ";
+    for(int x : s1)
+        if(s2.find(x) != s2.end())
+            cout << x << " ";
+
+    cout << "\nUnion: ";
+    unordered_set<int> uni = s1;
+    for(int x : s2) uni.insert(x);
+
+    for(int x : uni) cout << x << " ";
+
+    return 0;
+}
