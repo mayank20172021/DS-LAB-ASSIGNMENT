@@ -1,0 +1,43 @@
+#include <iostream>
+#include <unordered_map>
+using namespace std;
+
+struct Node {
+    int data;
+    Node *left, *right;
+    Node(int x) : data(x), left(NULL), right(NULL) {}
+};
+
+Node* build(vector<int>& post, int ps, int pe,
+            vector<int>& in, int is, int ie,
+            unordered_map<int,int>& mp) {
+
+    if(ps > pe || is > ie) return NULL;
+
+    Node* root = new Node(post[pe]);
+    int idx = mp[root->data];
+    int leftSize = idx - is;
+
+    root->left = build(post, ps, ps+leftSize-1,
+                       in, is, idx-1, mp);
+
+    root->right = build(post, ps+leftSize, pe-1,
+                        in, idx+1, ie, mp);
+
+    return root;
+}
+
+int main() {
+    vector<int> post = {9, 15, 7, 20, 3};
+    vector<int> in   = {9, 3, 15, 20, 7};
+
+    unordered_map<int,int> mp;
+    for(int i = 0; i < in.size(); i++)
+        mp[in[i]] = i;
+
+    Node* root = build(post, 0, post.size()-1,
+                       in, 0, in.size()-1, mp);
+
+    cout << "Tree constructed!";
+    return 0;
+}
